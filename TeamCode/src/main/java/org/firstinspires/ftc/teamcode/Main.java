@@ -14,6 +14,7 @@ public class Main extends OpMode {
     private DcMotor frontLeft, frontRight, rearLeft, rearRight, lift, lift1;
     CRServo intake, intake1, intake2;
     Servo claw1, claw2, airplane;
+    boolean ClawActivation;
 
     @Override
     public void init() {
@@ -40,6 +41,8 @@ public class Main extends OpMode {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        ClawActivation = false;
 
         //intake
         intake = hardwareMap.get(CRServo.class, "intake");
@@ -97,19 +100,40 @@ public class Main extends OpMode {
         intake.setPower(-Ispeed);
         intake1.setPower(-Ispeed / 5);
         intake2.setPower(Ispeed);
+
+        //Lifts
         lift.setPower(-gamepad2.right_stick_y / 3);
         lift1.setPower(gamepad2.right_stick_y / 3);
 
-      if(gamepad2.right_bumper){
+//      if(gamepad2.right_bumper){
+//
+//          claw1.setPosition(.3);
+//          claw2.setPosition(0);
+//
+//      }
+//      if(gamepad2.left_bumper) {
+//          claw1.setPosition(.1);
+//          claw2.setPosition(.2);
+//      }
+
+        //Claws
+        if(gamepad2.right_bumper && !ClawActivation){
 
           claw1.setPosition(.3);
           claw2.setPosition(0);
+          ClawActivation = true;
 
-      }
-      if(gamepad2.left_bumper) {
-          claw1.setPosition(.1);
+        }
+
+        if(gamepad2.right_bumper && ClawActivation){
+
+          claw1.setPosition(.2);
           claw2.setPosition(.2);
-      }
+          ClawActivation = false;
+
+        }
+
+
       if(gamepad1.y){
 
           airplane.setPosition(.7);
