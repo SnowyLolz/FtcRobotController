@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 // Import necessary libraries and classes
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "main")
@@ -11,10 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Main extends OpMode {
 
     // Define motor objects
-    private DcMotor frontLeft, frontRight, rearLeft, rearRight, lift, lift1;
-    CRServo intake, intake1, intake2;
-    Servo claw1, claw2, airplane;
-    boolean ClawActivation;
+    private DcMotor frontLeft, frontRight, rearLeft, rearRight, lift, knee, knee1;
+    Servo claw1, claw2, ankle;
 
     @Override
     public void init() {
@@ -23,39 +23,39 @@ public class Main extends OpMode {
         frontRight = hardwareMap.dcMotor.get("frontRight");
         rearLeft = hardwareMap.dcMotor.get("rearLeft");
         rearRight = hardwareMap.dcMotor.get("rearRight");
+        knee = hardwareMap.dcMotor.get("knee");
+        knee1 = hardwareMap.dcMotor.get("knee1");
+        ankle = hardwareMap.servo.get("ankle");
 
         // Set motor directions (assuming motors are oriented correctly)
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
         rearLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         rearRight.setDirection(DcMotor.Direction.FORWARD);
+        knee.setDirection(DcMotorSimple.Direction.FORWARD);
+        knee1.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Set motor run modes
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rearRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        knee.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        knee.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Set zero power behavior
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        knee.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        knee1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        ClawActivation = false;
-
-        //intake
-        intake = hardwareMap.get(CRServo.class, "intake");
-        intake1 = hardwareMap.get(CRServo.class, "intake1");
-        intake2 = hardwareMap.get(CRServo.class, "intake2");
         lift = hardwareMap.get(DcMotor.class, "lift");
-        lift1 = hardwareMap.get(DcMotor.class, "lift1");
         claw1 = hardwareMap.get(Servo.class, "claw1");
         claw2 = hardwareMap.get(Servo.class, "claw2");
-        airplane = hardwareMap.get(Servo.class, "airplane");
         claw1.setPosition(.1);
-        claw2.setPosition(.3);
-        airplane.setPosition(.6);
+        claw2.setPosition(.2);
     }
 
     @Override
@@ -95,50 +95,26 @@ public class Main extends OpMode {
         telemetry.addData("Rear Right Power", rearRightPower);
         telemetry.update();
 
-        //intake
-        double Ispeed = gamepad2.left_stick_y / 2;
-        intake.setPower(-Ispeed);
-        intake1.setPower(-Ispeed / 5);
-        intake2.setPower(Ispeed);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //Lifts
-        lift.setPower(-gamepad2.right_stick_y / 3);
-        lift1.setPower(gamepad2.right_stick_y / 3);
+        lift.setPower(-gamepad2.right_stick_y / 2);
 
-//      if(gamepad2.right_bumper){
-//
-//          claw1.setPosition(.3);
-//          claw2.setPosition(0);
-//
-//      }
-//      if(gamepad2.left_bumper) {
-//          claw1.setPosition(.1);
-//          claw2.setPosition(.2);
-//      }
+      if(gamepad2.right_bumper){
 
-        //Claws
-        if(gamepad2.right_bumper && !ClawActivation){
-
-          claw1.setPosition(.3);
+          claw1.setPosition(.25);
           claw2.setPosition(0);
-          ClawActivation = true;
-
-        }
-
-        if(gamepad2.right_bumper && ClawActivation){
-
-          claw1.setPosition(.2);
-          claw2.setPosition(.2);
-          ClawActivation = false;
-
-        }
-
-
-      if(gamepad1.y){
-
-          airplane.setPosition(.7);
 
       }
+      if(gamepad2.left_bumper) {
+          claw1.setPosition(.1);
+          claw2.setPosition(.2);
+      }
+
+      double KneePower = gamepad2.left_stick_y;
+      knee.setPower(KneePower);
+      knee1.setPower(KneePower);
+
+
     }
 
     @Override
