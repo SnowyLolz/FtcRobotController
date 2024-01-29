@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name = "main")
 
 public class Main extends OpMode {
-
+// Ticear a fost aici :0
     private DcMotor frontLeft, frontRight, rearLeft, rearRight, lift, knee, knee1;
     Servo claw1, claw2, ankle, airplane;
     public int  kneePOS = -20;
