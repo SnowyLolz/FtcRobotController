@@ -12,7 +12,6 @@ public class MecanumDrivetrain implements Mechanism {
 
     @Override
     public void init(HardwareMap hardwareMap) {
-
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         rearLeft = hardwareMap.dcMotor.get("rearLeft");
@@ -24,9 +23,6 @@ public class MecanumDrivetrain implements Mechanism {
 
         setRunModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         setPowers(0);
-
-
-
     }
 
     @Override

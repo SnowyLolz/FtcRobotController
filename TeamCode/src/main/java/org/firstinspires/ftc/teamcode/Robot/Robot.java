@@ -26,11 +26,9 @@ public class Robot implements Mechanism {
 
     @Override
     public void init(HardwareMap hardwareMap) {
-
         drivetrain = new MecanumDrivetrain();
         arm = new Arm();
         claw = new Claw();
-
         drivetrain.init(opMode.hardwareMap);
         arm.init(opMode.hardwareMap);
         claw.init(opMode.hardwareMap);

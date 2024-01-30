@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -17,6 +18,11 @@ public class Main extends OpMode {
     Servo claw1, claw2, ankle, airplane;
     public int  kneePOS = -20;
     public int knee1POS = -90;
+    boolean toggle = false;
+    Gamepad curGamepad1 = new Gamepad();
+    Gamepad curGamepad2 = new Gamepad();
+    Gamepad prevGamepad1 = new Gamepad();
+    Gamepad prevGamepad2 = new Gamepad();
 
     @Override
     public void init() {
@@ -73,6 +79,11 @@ public class Main extends OpMode {
 
     @Override
     public void loop() {
+        prevGamepad1.copy(curGamepad1);
+        prevGamepad2.copy(curGamepad1);
+        curGamepad1.copy(gamepad1);
+        curGamepad2.copy(gamepad2);
+
         double drive = -gamepad1.left_stick_y;
         double strafe = -gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
@@ -136,24 +147,37 @@ public class Main extends OpMode {
 //      knee.setPower(Range.clip(-gamepad2.left_stick_y * .1, min, max));
 //      knee1.setPower(Range.clip(-gamepad2.left_stick_y * .1, min, max));
 
-    if(gamepad2.b){
-        knee.setTargetPosition(MAX);
-        knee1.setTargetPosition(MAX2);
-        knee.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        knee1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        knee.setPower(-.2);
-        knee1.setPower(-.2);
+//    toggle = curGamepad2.b && ! prevGamepad2.b;
+//    if(toggle){
+//        knee.setTargetPosition(MAX);
+//        knee1.setTargetPosition(MAX2);
+//        knee.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        knee1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        knee.setPower(-.2);
+//        knee1.setPower(-.2);
+//    }
+//    else{
+//        knee.setTargetPosition(MIN);
+//        knee1.setTargetPosition(MIN2);
+//        knee.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        knee1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        knee.setPower(-.5);
+//        knee1.setPower(-.5);
+//    }
 
+    if(knee.getCurrentPosition() < MAX){
+        knee.setPower(gamepad2.left_stick_y);
+        if(knee.getCurrentPosition() == MAX){
+            knee.setTargetPosition(MAX);
+            knee.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
-
-
-    if(gamepad2.b){
-        knee.setTargetPosition(MIN);
-        knee1.setTargetPosition(MIN2);
-        knee.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        knee1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        knee.setPower(-.5);
-        knee1.setPower(-.5);
+    if(knee1.getCurrentPosition() < MAX2){
+        knee1.setPower(gamepad2.left_stick_y);
+        if(knee1.getCurrentPosition() == MAX2){
+            knee1.setTargetPosition(MAX2);
+            knee1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
 
 
