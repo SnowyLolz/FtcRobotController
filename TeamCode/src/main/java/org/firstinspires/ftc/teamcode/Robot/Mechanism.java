@@ -6,16 +6,13 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public interface Mechanism {
 
     void init();
 
-    void keybind(Gamepad gamepad);
-
-    void run();
+    void keybind(Gamepad currGamepad, Gamepad prevGamepad);
 
     default void setZeroPowerBehaviors(DcMotor.ZeroPowerBehavior b, @NonNull DcMotor... motors){
 

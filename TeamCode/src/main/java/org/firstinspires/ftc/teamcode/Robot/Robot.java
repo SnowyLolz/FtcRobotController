@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode.Robot;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class Robot implements Mechanism {
     public MecanumDrivetrain drivetrain;
+    public Slider slider;
     public Arm arm;
     public Claw claw;
-    public BNO055IMU imu;
+    public IMU imu;
     private OpMode opMode;
 
     public Robot (OpMode opMode){
@@ -18,15 +19,10 @@ public class Robot implements Mechanism {
 
     @Override
     public void init() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        imu = opMode.hardwareMap.get(BNO055IMU.class, "imu");
+        imu = opMode.hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
         drivetrain = new MecanumDrivetrain(opMode, MecanumDrivetrain.DriveMode.FIELD_CENTERED, imu);
         drivetrain.init();
@@ -37,12 +33,7 @@ public class Robot implements Mechanism {
     }
 
     @Override
-    public void keybind(Gamepad gamepad) {
-
-    }
-
-    @Override
-    public void run() {
+    public void keybind(Gamepad currGamepad, Gamepad prevGamepad) {
 
     }
 }
