@@ -14,3 +14,25 @@
   - [t] Field Centric Drivetrain Control
   - [t] PID for Drivetrain
   - [ ] PID for Sliders
+
+# Todo pe Maine
+- Configurare Slider
+  - Directii motoare
+  - Controale
+  - Limite Encodere
+  - Optiune de a schimba Limita?
+- Configurare Arm
+  - Directii servouri
+  - Controale
+  - Scaleul
+  - Limitele
+- Configurare Clesti
+  - Ankle
+    - Controale
+    - Limite
+    - Scale
+  - Clesti
+    - Controale
+    - Limite Deschidere / Inchidere
+- Testare Camera
+  - Recunoastere AprilTag-uri

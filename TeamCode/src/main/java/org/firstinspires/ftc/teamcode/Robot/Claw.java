@@ -31,8 +31,6 @@ public class Claw implements Mechanism{
 
     @Override
     public void keybind(Gamepad currGamepad, Gamepad prevGamepad) {
-        ly = currGamepad.left_trigger * ANKLE_SCALE;
-        ry = currGamepad.right_trigger * ANKLE_SCALE;
         if(currGamepad.left_bumper && !prevGamepad.left_bumper){
             claw1.setPosition(CLOSED1);
             claw2.setPosition(CLOSED2);
@@ -51,6 +49,8 @@ public class Claw implements Mechanism{
 //            claw1.setPosition(OPEN1);
 //            claw2.setPosition(OPEN2);
 //        }
+        ly = currGamepad.left_trigger * ANKLE_SCALE;
+        ry = currGamepad.right_trigger * ANKLE_SCALE;
         if(ankle.getPosition() > ANKLE_MAX)
             ankle.setPosition(ankle.getPosition() - ly);
         if(ankle.getPosition() < ANKLE_MIN)
